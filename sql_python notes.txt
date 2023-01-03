@@ -1,0 +1,106 @@
+##################SQL Conncetion#######################
+import mysql.connector
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="Pmansi@4847"
+)
+
+################# Create Cursor #######################
+"""A cursor is an object which helps to execute the query and fetch the records from the database"""
+
+mycursor = mydb.cursor()
+
+################# Cursor Commands #######################
+
+mycursor.execute('CREATE DATABASE MYDATABASE')
+
+mycursor.execute("SHOW DATABASES")
+for x in mycursor:
+  print(x)
+
+##### CREATING A TABLE--- to create a table make sure you define the name of the database when you create the connection
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="Pmansi@4847",
+  database='mydatabase'
+  )
+
+
+mycursor.execute("CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))")
+mycursor.execute('show tables')
+mycursor.execute("CREATE TABLE customers (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), address VARCHAR(255))")
+
+If the table already exists, use the ALTER TABLE keyword:
+mycursor.execute("ALTER TABLE customers ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY")
+
+############# INSERT INTO
+
+sql = "INSERT INTO customers (name, address) VALUES (%s, %s)"
+val = ("John", "Highway 21")
+mycursor.execute(sql, val)
+
+mydb.commit() ---> It is required to make the changes, otherwise no changes are made to the table.
+
+print(mycursor.rowcount, "record inserted.")
+
+#########To insert multiple rows into a table, use the executemany() method.
+The second parameter of the executemany() method is a list of tuples, containing the data you want to insert:
+
+You can get the id of the row you just inserted by asking the cursor object.
+
+Note: If you insert more than one row, the id of the last inserted row is returned.
+
+######### SELECT METHOD --> We use the fetchall() method, which fetches all rows from the last executed statement.
+
+If you are only interested in one row, you can use the fetchone() method.
+The fetchone() method will return the first row of the result:
+
+###### WHERE
+When selecting records from a table, you can filter the selection by using the "WHERE" statement:
+
+********Prevent SQL Injection
+
+When query values are provided by the user, you should escape the values.
+
+This is to prevent SQL injections, which is a common web hacking technique to destroy or misuse your database.
+
+The mysql.connector module has methods to escape query values:
+
+############### ORDER BY ###############
+
+Use the ORDER BY statement to sort the result in ascending or descending order.
+
+The ORDER BY keyword sorts the result ascending by default. To sort the result in descending order, use the DESC keyword.
+
+########## DELETE #############
+
+You can delete records from an existing table by using the "DELETE FROM" statement:
+
+######### DROP TABLE ##########
+
+You can delete an existing table by using the "DROP TABLE" statement:
+Drop Only if Exist
+If the table you want to delete is already deleted, or for any other reason does not exist,
+you can use the IF EXISTS keyword to avoid getting an error.
+
+
+########### UPDATE TABLE ###########
+
+You can update existing records in a table by using the "UPDATE" statement:
+
+############ LIMIT #########
+
+You can limit the number of records returned from the query, by using the "LIMIT" statement:
+
+Start From Another Position
+If you want to return five records, starting from the third record, you can use the "OFFSET" keyword:
+
+############ JOIN #########
+
+Join Two or More Tables
+You can combine rows from two or more tables, based on a related column between them, by using a JOIN statement.
+
